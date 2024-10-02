@@ -1,0 +1,60 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.3/cerulean/bootstrap.min.css" integrity="sha512-vaImhtQoaCXvevCM/UK+8ND/df0kiQWLtR65wgq0AWShEXLpWHMve0oGgU0q1gq1MbbyEuAhMMlqNmZd7s7wTQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        img {
+            border-radius: 50px;
+            height: 100px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+{% block body %}
+    <h1>Authors</h1>
+
+    {% if authors is empty %}
+        <p>No authors found</p>
+    {% else %}
+        {% set total_books = 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Nombre de livres</th>
+                    <th>Détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                    <tr>
+                        <td><img src="{{ author.picture }}" alt="{{ author.email }}" width="100"></td>
+                        <td>{{ author.username|upper }}</td>
+                        <td>{{ author.email }}</td>
+                        <td>{{ author.nb_books }}</td>
+                        <td><a href="{{ path('app_author_show', { 'name': author.username }) }}">Details</a></td>
+                    </tr>
+                    {% set total_books = total_books + author.nb_books %} <!-- Ajouter le nombre de livres de chaque auteur -->
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    {% endif %}
+
+    <p>Nombre total d'auteurs : {{ authors | length }}</p>
+    <p>Nombre total de livres de tous les auteurs : {{ total_books }}</p>
+
+{% endblock %}
